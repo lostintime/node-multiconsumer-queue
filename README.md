@@ -85,11 +85,11 @@ bus.topic("my-topic").process("log", (job, cb) => {
 
 // Save all "my-topic" messages to database
 bus.topic("my-topic").process("save", (job, cb) => {
-  // here we're going to save all messages from "my-topic" to database
+  console.log("here we're going to save all messages from \"my-topic\" to database")
   cb()
 })
 
-bus.add("Hello World!")
+bus.topic("my-topic").add("Hello World!")
 ```
 
 NOTE: Wrapper implementation is not removing consumer groups from `RedisLiveQueue` so once you're

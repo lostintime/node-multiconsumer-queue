@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by The Kue MultiConsumer Project Developers.
+ * Copyright (c) 2017 by The MultiConsumer Queue Project Developers.
  * Some rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
