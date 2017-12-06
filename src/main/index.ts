@@ -143,16 +143,19 @@ export class MultiConsumerQueueImpl<Job> implements MultiConsumerQueue<Job> {
       this._lastGroupsSet = consumers
     })
 
-    this._source.process((job, cb) => {
-      const consumers = this._lastGroupsSet
+    // subscribe source processing only when groups initialized
+    this._groups.onMembersInit(() => {
+      // group members list initialized (loaded from db), can now process source jobs
+      this._source.process((job, cb) => {
+        // dispatch job data to all consumer groups
+        this._lastGroupsSet.forEach((groupId) => {
+          if (groupId) { // forEach interface is fixed in v4 (may not be undefined)
+            this._out.add(groupId, this._jobDataLens(job))
+          }
+        })
 
-      consumers.forEach((groupId) => {
-        if (groupId) { // forEach interface is fixed in v4 (may not be undefined)
-          this._out.add(groupId, this._jobDataLens(job))
-        }
+        cb()
       })
-
-      cb()
     })
   }
 
