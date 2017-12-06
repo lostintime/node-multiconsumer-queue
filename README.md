@@ -6,8 +6,8 @@ A wrapper to build multi-consumer queues: tasks may be consumed by multiple proc
 
 ## Implementations
 
-  * [MultiConsumer Kue](https://npmjs.com/package/multiconsumer-kue) - implementation using [Kue](https://www.npmjs.com/package/kue) (_COMING SOON_)
-  * [MultiConsumer Bull](https://npmjs.com/package/multiconsumer-bull) - implementation using [Bull](https://www.npmjs.com/package/bull) (_COMING SOON_)
+  * [MultiConsumer Kue](https://npmjs.com/package/multiconsumer-kue) - implementation using [Kue](https://www.npmjs.com/package/kue)
+  * [MultiConsumer Bull](https://npmjs.com/package/multiconsumer-bull) - implementation using [Bull](https://www.npmjs.com/package/bull)
 
 ## Design
 
