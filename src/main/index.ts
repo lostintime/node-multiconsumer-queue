@@ -107,6 +107,24 @@ export class NamedQueueWrap<Job> implements Queue<Job> {
   }
 }
 
+/**
+ * Passes calls to out NamedQueue by transforming input topic name using give function
+ */
+export class DynamicallyNamedQueue<Job> implements NamedQueue<Job> {
+
+  constructor(readonly name: (name: string) => string,
+              readonly out: NamedQueue<Job>) {
+  }
+
+  add(name: string, data: any): void {
+    this.out.add(this.name(name), data)
+  }
+
+  process(name: string, fn: ProcessCallback<Job>, n?: number): void {
+    this.out.process(this.name(name), fn, n)
+  }
+}
+
 export interface EventBus<Job> {
   topic(name: string): MultiConsumerQueue<Job>
 }
@@ -117,22 +135,20 @@ export interface EventBus<Job> {
 export class MultiConsumerQueueImpl<Job> implements MultiConsumerQueue<Job> {
   private _lastGroupsSet: Set<string> = Set()
 
-  constructor(private readonly _sourceTopic: string,
-              private readonly _queue: NamedQueue<Job>,
+  constructor(private readonly _source: Queue<Job>,
+              private readonly _out: NamedQueue<Job>,
               private readonly _groups: RedisLiveSet<string>,
-              private readonly _jobDataLens: (j: Job) => any,
-              private readonly _groupTopicName: (topic: string, consumer: string) => string = (t: string, c: string) => `${t}/${c}`) {
+              private readonly _jobDataLens: (j: Job) => any) {
     this._groups.subscribe((consumers) => {
       this._lastGroupsSet = consumers
     })
 
-    this._queue.process(_sourceTopic, (job, cb) => {
+    this._source.process((job, cb) => {
       const consumers = this._lastGroupsSet
 
       consumers.forEach((groupId) => {
         if (groupId) { // forEach interface is fixed in v4 (may not be undefined)
-          const t = this._groupTopicName(this._sourceTopic, groupId)
-          this._queue.add(this._groupTopicName(this._sourceTopic, groupId), this._jobDataLens(job))
+          this._out.add(groupId, this._jobDataLens(job))
         }
       })
 
@@ -146,7 +162,7 @@ export class MultiConsumerQueueImpl<Job> implements MultiConsumerQueue<Job> {
    * @returns {Job}
    */
   add(data: any): void {
-    this._queue.add(this._sourceTopic, data)
+    this._source.add(data)
   }
 
   /**
@@ -157,7 +173,7 @@ export class MultiConsumerQueueImpl<Job> implements MultiConsumerQueue<Job> {
    */
   process(groupId: string, fn: ProcessCallback<Job>, n?: number): void {
     this._groups.add(groupId)
-    this._queue.process(this._groupTopicName(this._sourceTopic, groupId), fn, n)
+    this._out.process(groupId, fn, n)
   }
 
   /**
