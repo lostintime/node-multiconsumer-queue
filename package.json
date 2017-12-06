@@ -1,0 +1,39 @@
+{
+  "name": "multiconsumer-queue",
+  "version": "0.1.0",
+  "private": true,
+  "author": "lostintime <lostintime.dev@gmail.com>",
+  "license": "Apache-2.0",
+  "description": "A wrapper to build multiconsumer queues",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "Queue",
+    "Job",
+    "Worker"
+  ],
+  "bugs": {
+    "url": "https://github.com/lostintime/node-multiconsumer-queue/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lostintime/node-multiconsumer-queue.git"
+  },
+  "scripts": {
+    "test": "tsc && mocha \"dist/test/\"",
+    "lint": "tslint --project tsconfig.json",
+    "clean": "rm -R dist/",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "immutable": "^3.8.2",
+    "redis-liveset": "^0.1.2"
+  },
+  "devDependencies": {
+    "@types/redis": "^2.8.1",
+    "tslint": "^5.8.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "typescript": "^2.6.1"
+  }
+}
