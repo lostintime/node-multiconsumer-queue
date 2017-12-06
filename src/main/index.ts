@@ -87,7 +87,11 @@ export interface MultiConsumerProducer<Job> {
  * Queue may be consumed by multiple groups
  */
 export interface MultiConsumerQueue<Job> extends Consumer, MultiConsumerProducer<Job> {
-
+  /**
+   * Removes consumer group for current topic
+   * Use this for cleanup, replace process(groupId) with removeGroup(groupId), deploy for a while
+   */
+  removeGroup(groupId: string): this
 }
 
 /**
