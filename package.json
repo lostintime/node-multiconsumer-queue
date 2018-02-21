@@ -22,7 +22,8 @@
     "test": "tsc && mocha \"dist/test/\"",
     "lint": "tslint --project tsconfig.json",
     "clean": "rm -R dist/",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run clean && npm run build && npm run lint"
   },
   "dependencies": {
     "immutable": "^3.8.2",
