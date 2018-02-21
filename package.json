@@ -29,10 +29,10 @@
     "redis-liveset": "^0.2.0"
   },
   "devDependencies": {
-    "@types/redis": "^2.8.1",
-    "tslint": "^5.8.0",
+    "@types/redis": "^2.8.5",
+    "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
-    "tslint-eslint-rules": "^4.1.1",
-    "typescript": "^2.6.1"
+    "tslint-eslint-rules": "^5.0.0",
+    "typescript": "^2.7.2"
   }
 }
